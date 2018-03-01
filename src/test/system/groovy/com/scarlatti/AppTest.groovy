@@ -1,4 +1,4 @@
-package com.scarlatti.integration
+package com.scarlatti
 
 import com.scarlatti.App
 import org.junit.Test
