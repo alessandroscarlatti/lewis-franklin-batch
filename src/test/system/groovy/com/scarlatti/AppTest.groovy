@@ -1,6 +1,5 @@
 package com.scarlatti
 
-import com.scarlatti.App
 import org.junit.Test
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
@@ -11,7 +10,7 @@ class AppTest extends Specification {
 	@Test
 	"context can load"() {
 		when:
-			println "loaded context."
+			println "loaded context. what"
 		then:
 			notThrown(Exception)
 	}

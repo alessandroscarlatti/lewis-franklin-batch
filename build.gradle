@@ -18,41 +18,19 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 sourceSets {
-	systemTest {
-		groovy {
-			srcDir 'src/test/system/groovy'
-			compileClasspath += main.output + test.output
-			runtimeClasspath += main.output + test.output
-		}
-		resources.srcDirs = ['src/test/system/resources']
-	}
+	test.groovy.srcDirs = [
+		'src/test/system/groovy',
+		'src/test/unit/groovy'
+	]
 
-	unitTest {
-		groovy {
-			srcDir 'src/test/unit/groovy'
-			compileClasspath += main.output + test.output
-			runtimeClasspath += main.output + test.output
-		}
-		resources.srcDirs = ['src/test/unit/resources']
-	}
+	test.resources.srcDirs = [
+		'src/test/system/resources',
+		'src/test/unit/resources'
+	]
 }
 
-configurations {
-	unitTestCompile.extendsFrom testCompile
-	unitTestRuntime.extendsFrom testRuntime
-
-	systemTestCompile.extendsFrom testCompile
-	systemTestCompile.extendsFrom testRuntime
-}
-
-test {
-	testClassesDir = sourceSets.unitTest.output.classesDir
-	classpath = sourceSets.unitTest.runtimeClasspath
-}
-
-task systemTest(type: Test, group: 'verification') {
-	testClassesDir = sourceSets.systemTest.output.classesDir
-	classpath = sourceSets.systemTest.runtimeClasspath
+task unitTest(type: Test, group: 'verification') {
+	include 'unit/*'
 }
 
 repositories {
