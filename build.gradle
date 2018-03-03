@@ -18,19 +18,94 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 sourceSets {
-	test.groovy.srcDirs = [
-		'src/test/system/groovy',
-		'src/test/unit/groovy'
-	]
 
-	test.resources.srcDirs = [
-		'src/test/system/resources',
-		'src/test/unit/resources'
-	]
+
+
+//	// we need to build the common source set
+//	common {
+//		groovy {
+//			srcDirs = [
+//					'src/test/common/groovy',
+//					'src/test/system/groovy',
+//					'src/test/unit/groovy'
+//            ]
+//		}
+//		resources {
+//			srcDirs = ['src/test/common/resources']
+//		}
+//
+//		compileClasspath += sourceSets.main.runtimeClasspath
+//	}
+
+	// we need to build the common source set
+	systemTest {
+		groovy {
+			srcDirs = [
+					'src/test/system/groovy',
+					'src/test/common/groovy'
+			]
+		}
+		resources {
+			srcDirs = ['src/test/system/resources']
+		}
+
+		compileClasspath += sourceSets.test.runtimeClasspath
+		runtimeClasspath += sourceSets.test.runtimeClasspath
+	}
+
+	unitTest {
+		groovy {
+			srcDirs = ['src/test/unit/groovy',
+					   'src/test/common/groovy'
+			]
+		}
+		resources {
+			srcDirs = ['src/test/unit/resources']
+		}
+
+		compileClasspath += sourceSets.test.runtimeClasspath
+		runtimeClasspath += sourceSets.test.runtimeClasspath
+	}
+
+	// we need to build the common source set
+	functionTest {
+		groovy {
+			srcDirs = ['src/test/common/groovy',
+					   'src/test/function/groovy'
+			]
+		}
+		resources {
+			srcDirs = ['src/test/function/resources']
+		}
+
+		compileClasspath += sourceSets.test.runtimeClasspath
+		runtimeClasspath += sourceSets.test.runtimeClasspath
+	}
+
+//	test.groovy.srcDirs = [
+//		'src/test/system/groovy',
+//		'src/test/unit/groovy'
+//	]
+//
+//	test.resources.srcDirs = [
+//		'src/test/system/resources',
+//		'src/test/unit/resources'
+//	]
 }
 
 task unitTest(type: Test, group: 'verification') {
-	include 'unit/*'
+	testClassesDir = sourceSets.unitTest.output.classesDir
+	classpath += sourceSets.unitTest.runtimeClasspath
+}
+
+task functionTest(type: Test, group: 'verification') {
+	testClassesDir = sourceSets.functionTest.output.classesDir
+	classpath += sourceSets.functionTest.runtimeClasspath
+}
+
+task systemTest(type: Test, group: 'verification') {
+	testClassesDir = sourceSets.systemTest.output.classesDir
+	classpath += sourceSets.systemTest.runtimeClasspath
 }
 
 repositories {
