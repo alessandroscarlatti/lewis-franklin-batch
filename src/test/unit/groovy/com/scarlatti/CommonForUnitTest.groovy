@@ -10,7 +10,7 @@ import spock.lang.Specification
  * /_/ |_/_/\__/___/___/\_,_/_//_/\_,_/_/  \___/ /___/\__/\_,_/_/ /_/\_,_/\__/\__/_/
  * Friday, 3/2/2018
  */
-class CommonTest extends Specification {
+class CommonForUnitTest extends Specification {
 
     @Test
     "can access common utility class"() {

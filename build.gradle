@@ -82,15 +82,16 @@ sourceSets {
 		runtimeClasspath += sourceSets.test.runtimeClasspath
 	}
 
-//	test.groovy.srcDirs = [
-//		'src/test/system/groovy',
-//		'src/test/unit/groovy'
-//	]
-//
-//	test.resources.srcDirs = [
-//		'src/test/system/resources',
-//		'src/test/unit/resources'
-//	]
+	unitAndFunctionTest {
+
+		groovy {
+			srcDirs += sourceSets.unitTest.allSource.srcDirs
+			srcDirs += sourceSets.functionTest.allSource.srcDirs
+		}
+
+		compileClasspath += sourceSets.test.runtimeClasspath
+		runtimeClasspath += sourceSets.test.runtimeClasspath
+	}
 }
 
 task unitTest(type: Test, group: 'verification') {
@@ -106,6 +107,20 @@ task functionTest(type: Test, group: 'verification') {
 task systemTest(type: Test, group: 'verification') {
 	testClassesDir = sourceSets.systemTest.output.classesDir
 	classpath += sourceSets.systemTest.runtimeClasspath
+}
+
+test {
+	testClassesDir = sourceSets.unitAndFunctionTest.output.classesDir
+	classpath += sourceSets.unitAndFunctionTest.runtimeClasspath
+}
+
+idea {
+	module {
+//		name = 'penguin'
+////		sourceDirs += file('src/test/common/groovy')
+////		testSourceDirs += file('src/test/commmon')
+//		contentRoot = file('src/test/common')
+	}
 }
 
 repositories {
