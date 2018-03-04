@@ -18,7 +18,7 @@ class CommonForUnitTest extends Specification {
     @Test
     "can access common utility class"() {
         expect:
-            println "accessed common utility class in unit test: ${CommonUtil.getSomeString()}"
+            println "accessed common utility class in unit test: ${CommonUtil.getAPenguinName()}"
     }
 
     @Test

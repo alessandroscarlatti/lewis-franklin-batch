@@ -42,8 +42,8 @@ sourceSets {
 			]
 		}
 
-		compileClasspath += sourceSets.test.runtimeClasspath
-		runtimeClasspath += sourceSets.test.runtimeClasspath
+		compileClasspath += sourceSets.common.runtimeClasspath
+		runtimeClasspath += sourceSets.common.runtimeClasspath
 	}
 
 	unitTest {
@@ -56,8 +56,8 @@ sourceSets {
 			]
 		}
 
-		compileClasspath += sourceSets.test.runtimeClasspath
-		runtimeClasspath += sourceSets.test.runtimeClasspath
+		compileClasspath += sourceSets.common.runtimeClasspath
+		runtimeClasspath += sourceSets.common.runtimeClasspath
 	}
 
 	// we need to build the common source set
@@ -71,8 +71,8 @@ sourceSets {
 			]
 		}
 
-		compileClasspath += sourceSets.test.runtimeClasspath
-		runtimeClasspath += sourceSets.test.runtimeClasspath
+		compileClasspath += sourceSets.common.runtimeClasspath
+		runtimeClasspath += sourceSets.common.runtimeClasspath
 	}
 
 //	unitAndFunctionTest {
@@ -90,11 +90,13 @@ sourceSets {
 task unitTest(type: Test, group: 'verification') {
 	testClassesDir = sourceSets.unitTest.output.classesDir
 	classpath += sourceSets.unitTest.runtimeClasspath
+	outputs.upToDateWhen {false}
 }
 
 task functionTest(type: Test, group: 'verification') {
 	testClassesDir = sourceSets.functionTest.output.classesDir
 	classpath += sourceSets.functionTest.runtimeClasspath
+	outputs.upToDateWhen {false}
 }
 
 task systemTest(type: Test, group: 'verification') {
@@ -103,17 +105,7 @@ task systemTest(type: Test, group: 'verification') {
 }
 
 test {
-//	testClassesDir = sourceSets.unitAndFunctionTest.output.classesDir
-//	classpath += sourceSets.unitAndFunctionTest.runtimeClasspath
-}
-
-idea {
-	module {
-//		name = 'penguin'
-////		sourceDirs += file('src/test/common/groovy')
-////		testSourceDirs += file('src/test/commmon')
-//		contentRoot = file('src/test/common')
-	}
+	dependsOn = [unitTest, functionTest]
 }
 
 repositories {
