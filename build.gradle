@@ -19,34 +19,27 @@ sourceCompatibility = 1.8
 
 sourceSets {
 
+	common {
+		groovy {
+			srcDirs = ['src/test/common/groovy']
+		}
 
+		resources {
+			srcDirs = ['src/test/common/resources']
+		}
 
-//	// we need to build the common source set
-//	common {
-//		groovy {
-//			srcDirs = [
-//					'src/test/common/groovy',
-//					'src/test/system/groovy',
-//					'src/test/unit/groovy'
-//            ]
-//		}
-//		resources {
-//			srcDirs = ['src/test/common/resources']
-//		}
-//
-//		compileClasspath += sourceSets.main.runtimeClasspath
-//	}
+		compileClasspath += sourceSets.test.runtimeClasspath
+		runtimeClasspath += sourceSets.test.runtimeClasspath
+	}
 
-	// we need to build the common source set
 	systemTest {
 		groovy {
-			srcDirs = [
-					'src/test/system/groovy',
-					'src/test/common/groovy'
-			]
+			srcDirs = ['src/test/system/groovy',]
 		}
 		resources {
-			srcDirs = ['src/test/system/resources']
+			srcDirs = [
+					'src/test/system/resources',
+			]
 		}
 
 		compileClasspath += sourceSets.test.runtimeClasspath
@@ -55,12 +48,12 @@ sourceSets {
 
 	unitTest {
 		groovy {
-			srcDirs = ['src/test/unit/groovy',
-					   'src/test/common/groovy'
-			]
+			srcDirs = ['src/test/unit/groovy']
 		}
 		resources {
-			srcDirs = ['src/test/unit/resources']
+			srcDirs = [
+					'src/test/unit/resources',
+			]
 		}
 
 		compileClasspath += sourceSets.test.runtimeClasspath
@@ -70,28 +63,28 @@ sourceSets {
 	// we need to build the common source set
 	functionTest {
 		groovy {
-			srcDirs = ['src/test/common/groovy',
-					   'src/test/function/groovy'
-			]
+			srcDirs = ['src/test/function/groovy']
 		}
 		resources {
-			srcDirs = ['src/test/function/resources']
+			srcDirs = [
+					'src/test/function/resources',
+			]
 		}
 
 		compileClasspath += sourceSets.test.runtimeClasspath
 		runtimeClasspath += sourceSets.test.runtimeClasspath
 	}
 
-	unitAndFunctionTest {
-
-		groovy {
-			srcDirs += sourceSets.unitTest.allSource.srcDirs
-			srcDirs += sourceSets.functionTest.allSource.srcDirs
-		}
-
-		compileClasspath += sourceSets.test.runtimeClasspath
-		runtimeClasspath += sourceSets.test.runtimeClasspath
-	}
+//	unitAndFunctionTest {
+//
+//		groovy {
+//			srcDirs += sourceSets.unitTest.allSource.srcDirs
+//			srcDirs += sourceSets.functionTest.allSource.srcDirs
+//		}
+//
+//		compileClasspath += sourceSets.test.runtimeClasspath
+//		runtimeClasspath += sourceSets.test.runtimeClasspath
+//	}
 }
 
 task unitTest(type: Test, group: 'verification') {
@@ -110,8 +103,8 @@ task systemTest(type: Test, group: 'verification') {
 }
 
 test {
-	testClassesDir = sourceSets.unitAndFunctionTest.output.classesDir
-	classpath += sourceSets.unitAndFunctionTest.runtimeClasspath
+//	testClassesDir = sourceSets.unitAndFunctionTest.output.classesDir
+//	classpath += sourceSets.unitAndFunctionTest.runtimeClasspath
 }
 
 idea {

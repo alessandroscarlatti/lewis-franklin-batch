@@ -8,7 +8,7 @@ package com.scarlatti;
  * Friday, 3/2/2018
  */
 public class CommonUtil {
-    public static String getSomeString() {
-        return "some string";
+    public static String getAPenguinName() {
+        return new PenguinRetrievalService().getPenguins().get(0).getName();
     }
 }
