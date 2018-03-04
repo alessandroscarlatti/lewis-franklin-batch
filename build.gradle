@@ -19,13 +19,13 @@ sourceCompatibility = 1.8
 
 sourceSets {
 
-	common {
+	shared {
 		groovy {
-			srcDirs = ['src/test/common/groovy']
+			srcDirs = ['src/test/shared/groovy']
 		}
 
 		resources {
-			srcDirs = ['src/test/common/resources']
+			srcDirs = ['src/test/shared/resources']
 		}
 
 		compileClasspath += sourceSets.test.runtimeClasspath
@@ -42,8 +42,8 @@ sourceSets {
 			]
 		}
 
-		compileClasspath += sourceSets.common.runtimeClasspath
-		runtimeClasspath += sourceSets.common.runtimeClasspath
+		compileClasspath += sourceSets.shared.runtimeClasspath
+		runtimeClasspath += sourceSets.shared.runtimeClasspath
 	}
 
 	unitTest {
@@ -56,11 +56,11 @@ sourceSets {
 			]
 		}
 
-		compileClasspath += sourceSets.common.runtimeClasspath
-		runtimeClasspath += sourceSets.common.runtimeClasspath
+		compileClasspath += sourceSets.shared.runtimeClasspath
+		runtimeClasspath += sourceSets.shared.runtimeClasspath
 	}
 
-	// we need to build the common source set
+	// we need to build the shared source set
 	functionTest {
 		groovy {
 			srcDirs = ['src/test/function/groovy']
@@ -71,20 +71,9 @@ sourceSets {
 			]
 		}
 
-		compileClasspath += sourceSets.common.runtimeClasspath
-		runtimeClasspath += sourceSets.common.runtimeClasspath
+		compileClasspath += sourceSets.shared.runtimeClasspath
+		runtimeClasspath += sourceSets.shared.runtimeClasspath
 	}
-
-//	unitAndFunctionTest {
-//
-//		groovy {
-//			srcDirs += sourceSets.unitTest.allSource.srcDirs
-//			srcDirs += sourceSets.functionTest.allSource.srcDirs
-//		}
-//
-//		compileClasspath += sourceSets.test.runtimeClasspath
-//		runtimeClasspath += sourceSets.test.runtimeClasspath
-//	}
 }
 
 task unitTest(type: Test, group: 'verification') {
@@ -94,6 +83,7 @@ task unitTest(type: Test, group: 'verification') {
 }
 
 task functionTest(type: Test, group: 'verification') {
+	mustRunAfter unitTest
 	testClassesDir = sourceSets.functionTest.output.classesDir
 	classpath += sourceSets.functionTest.runtimeClasspath
 	outputs.upToDateWhen {false}
@@ -102,10 +92,17 @@ task functionTest(type: Test, group: 'verification') {
 task systemTest(type: Test, group: 'verification') {
 	testClassesDir = sourceSets.systemTest.output.classesDir
 	classpath += sourceSets.systemTest.runtimeClasspath
+	outputs.upToDateWhen {false}
 }
 
 test {
 	dependsOn = [unitTest, functionTest]
+}
+
+idea {
+	module {
+		testSourceDirs += file('src/test/function/groovy')
+	}
 }
 
 repositories {
