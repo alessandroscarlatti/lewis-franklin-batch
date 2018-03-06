@@ -49,18 +49,21 @@ class TestSourceSetFactory {
 
         void build() {
             project.with {
-                shared {
-                    groovy {
-                        srcDirs = newSrcDirs
-                    }
 
-                    resources {
-                        srcDirs = newResourceDirs
-                    }
+                sourceSets {
+                    "${sourceSetName}" {
+                        groovy {
+                            srcDirs = newSrcDirs
+                        }
 
-                    for (SourceSet sourceSet : newDependencies) {
-                        compileClasspath += sourceSet.runtimeClasspath
-                        runtimeClasspath += sourceSet.runtimeClasspath
+                        resources {
+                            srcDirs = newResourceDirs
+                        }
+
+                        for (SourceSet sourceSet : newDependencies) {
+                            compileClasspath += sourceSet.runtimeClasspath
+                            runtimeClasspath += sourceSet.runtimeClasspath
+                        }
                     }
                 }
             }

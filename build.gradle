@@ -1,4 +1,4 @@
-import com.scarlatti.MyBuildScript
+import com.scarlatti.TestSourceSetFactory
 
 buildscript {
 	ext {
@@ -19,7 +19,40 @@ apply plugin: 'org.springframework.boot'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
-apply plugin: MyBuildScript
+TestSourceSetFactory.newSourceSet(project)
+		.withName("shared")
+		.withSrcDirs(['src/test/shared/groovy'])
+		.withResourceDirs(['src/test/shared/resources'])
+		.withDependencies([sourceSets.test])
+		.build()
+
+TestSourceSetFactory.newSourceSet(project)
+		.withName("unitTest")
+		.withSrcDirs(['src/test/unit/groovy'])
+		.withResourceDirs(['src/test/unit/resources'])
+		.withDependencies([sourceSets.shared])
+		.build()
+
+TestSourceSetFactory.newSourceSet(project)
+		.withName("functionTest")
+		.withSrcDirs(['src/test/function/groovy'])
+		.withResourceDirs(['src/test/function/resources'])
+		.withDependencies([sourceSets.shared])
+		.build()
+
+TestSourceSetFactory.newSourceSet(project)
+		.withName("systemTest")
+		.withSrcDirs(['src/test/system/groovy'])
+		.withResourceDirs(['src/test/system/resources'])
+		.withDependencies([sourceSets.shared])
+		.build()
+
+TestSourceSetFactory.newSourceSet(project)
+		.withName("util")
+		.withSrcDirs(['src/test/util/groovy'])
+		.withResourceDirs(['src/test/util/resources'])
+		.withDependencies([sourceSets.shared])
+		.build()
 
 task unitTest(type: Test, group: 'verification') {
 	testClassesDir = sourceSets.unitTest.output.classesDir
