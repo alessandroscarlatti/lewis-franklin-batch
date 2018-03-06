@@ -1,3 +1,5 @@
+import com.scarlatti.MyBuildScript
+
 buildscript {
 	ext {
 		springBootVersion = '1.5.6.RELEASE'
@@ -17,64 +19,7 @@ apply plugin: 'org.springframework.boot'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
-sourceSets {
-
-	shared {
-		groovy {
-			srcDirs = ['src/test/shared/groovy']
-		}
-
-		resources {
-			srcDirs = ['src/test/shared/resources']
-		}
-
-		compileClasspath += sourceSets.test.runtimeClasspath
-		runtimeClasspath += sourceSets.test.runtimeClasspath
-	}
-
-	systemTest {
-		groovy {
-			srcDirs = ['src/test/system/groovy',]
-		}
-		resources {
-			srcDirs = [
-					'src/test/system/resources',
-			]
-		}
-
-		compileClasspath += sourceSets.shared.runtimeClasspath
-		runtimeClasspath += sourceSets.shared.runtimeClasspath
-	}
-
-	unitTest {
-		groovy {
-			srcDirs = ['src/test/unit/groovy']
-		}
-		resources {
-			srcDirs = [
-					'src/test/unit/resources',
-			]
-		}
-
-		compileClasspath += sourceSets.shared.runtimeClasspath
-		runtimeClasspath += sourceSets.shared.runtimeClasspath
-	}
-
-	// we need to build the shared source set
-	functionTest {
-		groovy {
-			srcDirs = ['src/test/function/groovy']
-		}
-		resources {
-			srcDirs = [
-					'src/test/function/resources',
-			]
-		}
-
-		compileClasspath += sourceSets.shared.runtimeClasspath
-		runtimeClasspath += sourceSets.shared.runtimeClasspath
-	}
-}
+apply plugin: MyBuildScript
 
 task unitTest(type: Test, group: 'verification') {
 	testClassesDir = sourceSets.unitTest.output.classesDir
@@ -97,12 +42,6 @@ task systemTest(type: Test, group: 'verification') {
 
 test {
 	dependsOn = [unitTest, functionTest]
-}
-
-idea {
-	module {
-		testSourceDirs += file('src/test/function/groovy')
-	}
 }
 
 repositories {

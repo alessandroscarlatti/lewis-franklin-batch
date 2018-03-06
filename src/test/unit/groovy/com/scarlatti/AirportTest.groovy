@@ -4,6 +4,7 @@ import com.scarlatti.model.Penguin
 import org.junit.Test
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * ______    __                         __           ____             __     __  __  _
@@ -26,7 +27,7 @@ class AirportTest extends Specification {
         airport.transport(new Penguin("Phil", 6))
     }
 
-    @Test
+    @Unroll
     "airport allows travelers 5 and older for age #age"(int age) {
         when:
             Penguin penguin = new Penguin("Alguien", age)
